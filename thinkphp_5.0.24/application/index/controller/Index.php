@@ -31,7 +31,7 @@ class Index
 
         $payAmount = 0.5;
 		$from_addr = $crypto_env->GetTRC20WalletPublicKey();
-		$private_key = $crypto_env->GetTRC20WalletPrivateKey();
+		$private_key = $crypto_env->decryptTRC20WalletPrivateKey();
 		$to_addr = 'TYKQvmp6yaYqKUNuLmftjDHhnEHcYkMGDQ';
 		
 		$tron->setAddress($from_addr);
@@ -99,6 +99,7 @@ class Index
         $tron->setPrivateKey($private_key);
         $signedTransaction = $tron->signTransaction($tx);
         $response = $tron->sendRawTransaction($signedTransaction);
-        echo '<pre>' , var_dump(array("transaction response" => $response)) , '</pre>';
+        echo '<pre>' , "transaction status:  ". $response['result'] , '</pre>';
+        echo '<pre>' , "transaction hash:    ". $response['txid'] , '</pre>';
     }
 }

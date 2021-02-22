@@ -42,8 +42,8 @@ class CryptoEnv{
 
         $this->erc20_wallet_private_key ='0xf971a5e20176cc73770589580eeffb841aa9a7d6bdb9a3251af39cebd9ab6411';
 
-        $this->trc20_wallet_public_key = '';
-        $this->trc20_wallet_private_key ='5a96f979a0f8036019e4852b1a20abe86058f4cf996d5c4e54308e2a0ba3fff1';
+        $this->trc20_wallet_public_key = 'TKLuhYv5GtcCR2mcadjYBURyme14Y2ypfv';
+        $this->trc20_wallet_private_key ='';
     }
 
     public function GetInfuraKey(){
@@ -101,6 +101,28 @@ class CryptoEnv{
         ];
         
         return $prices;
+    }
+
+    public function decryptTRC20WalletPrivateKey(){
+
+        $key_string = $this->trc20_wallet_private_key;
+        $ciphering = "AES-128-CTR"; 
+        $iv_length = openssl_cipher_iv_length($ciphering); 
+        $options = 0; 
+        $encryption_iv = '1237894561045613'; 
+        $encryption_key = "CryptoMinerKey"; 
+        $encryption = openssl_encrypt($key_string, $ciphering, $encryption_key, $options, $encryption_iv); 
+          
+        //private key saved in database
+        echo '<pre>', "Encrypted private key: ". $encryption,  '</pre>'; 
+                 
+        $decryption_iv = '1237894561045613'; 
+        $decryption_key = "CryptoMinerKey"; 
+        $decryption=openssl_decrypt ($encryption, $ciphering, $decryption_key, $options, $decryption_iv); 
+        
+        echo '<pre>', "Decrypted private key: ". $decryption,  '</pre>'; 
+
+        return $decryption;
     }
 }  
 
